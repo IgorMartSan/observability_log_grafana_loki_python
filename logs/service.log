@@ -1,0 +1,15 @@
+2024-10-08 15:18:12,834 - ERROR - An exception occurred
+Traceback (most recent call last):
+  File "/home/igor/projects/observability_log_grafana_loki_python/log_creator.py", line 22, in <module>
+    raise ValueError("Simulated exception")
+ValueError: Simulated exception
+2024-10-08 15:18:16,096 - ERROR - An exception occurred
+Traceback (most recent call last):
+  File "/home/igor/projects/observability_log_grafana_loki_python/log_creator.py", line 22, in <module>
+    raise ValueError("Simulated exception")
+ValueError: Simulated exception
+2024-10-08 15:18:20,100 - ERROR - An exception occurred
+Traceback (most recent call last):
+  File "/home/igor/projects/observability_log_grafana_loki_python/log_creator.py", line 22, in <module>
+    raise ValueError("Simulated exception")
+ValueError: Simulated exception

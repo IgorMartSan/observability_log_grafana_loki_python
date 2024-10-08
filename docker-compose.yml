@@ -1,0 +1,37 @@
+
+services:
+  loki:
+    image: grafana/loki:main-8aa8a2b                  # Specifies the Loki Docker image and version.
+    container_name: loki                            # Names the container for easier management.
+    volumes:
+      - ./loki-config.yaml:/etc/loki/loki-config.yaml # Mounts the Loki configuration file.
+      - ./data:/tmp
+    ports:
+      - "3100:3100"                                 # Maps port 3100 on the host to port 3100 in the container.
+    networks:
+      - loki
+
+  promtail:
+    image: grafana/promtail:main-8aa8a2b          # Specifies the Promtail Docker image and version.
+    container_name: promtail                        # Names the container for easier management.
+    depends_on:
+      - loki
+    volumes:
+      - ./promtail-config.yaml:/etc/promtail/promtail-config.yaml # Mounts the Promtail configuration file.
+      -  ${PATH_LOGS}:/var/log    
+    ports:
+      - "9080:9080"                             # Mounts the host's log directory.                                    # Ensures Promtail starts after Loki.
+    networks:
+      - loki
+
+  grafana:
+    container_name: grafana    
+    image: grafana/grafana
+    ports:
+      - 4000:3000
+    networks:
+      - loki
+
+networks:
+  loki:
+    driver: bridge

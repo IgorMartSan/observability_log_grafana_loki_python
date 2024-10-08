@@ -1,0 +1,38 @@
+auth_enabled: false
+
+server:
+  http_listen_port: 3100  # Porta onde o serviço Loki ficará disponível.
+
+ingester:
+  lifecycler:
+    address: 127.0.0.1
+    ring:
+      kvstore:
+        store: inmemory  # Define o armazenamento como "in-memory", útil para testes ou pequenas implementações.
+      replication_factor: 1
+    final_sleep: 0s
+
+schema_config:
+  configs:
+    - from: 2024-01-01
+      store: boltdb-shipper
+      object_store: filesystem  # Usar o sistema de arquivos local para armazenar dados.
+      schema: v11
+      index:
+        prefix: index_
+        period: 168h
+
+storage_config:
+  boltdb_shipper:
+    active_index_directory: /tmp/loki/index  # Diretório onde os índices ativos serão armazenados.
+    shared_store: filesystem  # Define o armazenamento compartilhado, aqui configurado para "filesystem".
+  filesystem:
+    directory: /tmp/loki/chunks  # Diretório onde os chunks (partes dos logs) serão armazenados.
+
+limits_config:
+  max_streams_per_user: 10000  # Número máximo de streams por usuário.
+  max_global_streams_per_user: 100000  # Número global máximo de streams por usuário.
+
+compactor:
+  retention_enabled: true  # Habilita a compactação dos dados após o período de retenção.
+  retention_delete_delay: 24h  # Define a retenção dos dados por 24 horas antes da exclusão.
